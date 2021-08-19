@@ -61,7 +61,7 @@ except:
 
 ##########import weather json
 from urllib.request import urlopen
-url = "http://api.openweathermap.org/data/2.5/weather?" + cf["openweatherlocation"] + "&appid=dab310181eb09bd7ac2520fa1e097a1b&lang=de&units=metric"
+url = "http://api.openweathermap.org/data/2.5/weather?" + cf["openweatherlocation"] + "&appid=" + cf["openweatherapikey"] + "&lang=de&units=metric"
 response = urlopen(url)
 data_weather = json.loads(response.read())
 outdoortemp = float(data_weather["main"]["temp"])
