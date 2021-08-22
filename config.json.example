@@ -1,1 +1,21 @@
-
+{
+   "htmloutput":
+   {
+		"file":"/var/www/html/weather.html",
+		"string_tolesshumi":"An diesem Ort ist die Luftfeuchtigkeit zu niedrig",
+		"string_tolesshumi_open":", da die abs. Feuchte drau&szlig;sen h&ouml;her ist, sollte zum ausgleich gel&uuml;ftet werden. <i class=\"fas fa-door-open\"></i>",
+		"string_tolesshumi_close":", da die abs. Feuchte drau&szlig;sen niedriger ist, sollte nicht gel&uuml;ftet werden um die Luftfeuchtigkeit m&ouml;glichst zu erhalten. <i class=\"fas fa-door-closed\"></i>",
+		"string_tomuchhumi":"An diesem Ort ist die Luftfeuchtigkeit zu hoch",
+		"string_tomuchhumi_open":", da die abs. Feuchte drau&szlig;sen niedriger ist, sollte zum ausgleich gel&uuml;ftet werden. <i class=\"fas fa-door-open\"></i>",
+		"string_tomuchhumi_close":", da die abs. Feuchte drau&szlig;sen h&ouml;her ist, sollte nicht gel&uuml;ftet werden um die Luftfeuchtigkeit m&ouml;glichst zu erhalten. <i class=\"fas fa-door-closed\"></i>",
+		"string_righthumi":"An diesem Ort ist die Luftfeuchtigkeit passend. <i class=\"far fa-thumbs-up\"></i>"
+	},
+   "openweatherlocation":"zip=23569,de",
+   "openweatherapikey":"",
+   "place":
+   {
+	   "e5:62:73":"Room 1",
+	   "7c:dd:8e":"Room 2",
+       "78:dd:fe":"Room 3"
+   }
+}

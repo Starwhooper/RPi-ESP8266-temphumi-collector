@@ -1,0 +1,50 @@
+h1 {
+	font-size : 3.0rem;
+	background : lightgreen;
+}
+
+h2 {
+	font-size : 2.0rem;
+}
+
+a:link, a:visited, a:hover, a:active {
+	background-color : lightgray;
+	color : white;
+	text-align : center;
+	text-decoration : none;
+	display : inline-block;
+	width : 100%;
+}
+
+html {
+	font-family : Arial;
+	display : inline-block;
+	margin : 0 auto;
+	text-align : center;
+}
+
+p {
+	font-size : 3.0rem;
+}
+
+p.small {
+	font-size : 1.0rem;
+}
+
+table {
+	margin-left : auto;
+	margin-right : auto;
+	border : black solid 1px;
+	border-collapse : collapse;
+}
+
+td, th, tr {
+	border : black solid 1px;
+	border-collapse : collapse;
+	font-size : 0.8rem;
+}
+
+img {
+	max-width : 100%;
+	height : auto;
+}
