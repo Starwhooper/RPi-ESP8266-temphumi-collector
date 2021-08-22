@@ -1,4 +1,6 @@
-Seek device from Espressif, as example the ESP01, and try to get infomration about temperatur and humididy from it.
-Collect is on one webpage and recommend if you habe t close, open your Window.
+Detect ESP8266 by itself, try to grep the weather information and publish it to website
 
-The Image on ESP8266 to offer the infomration, may you found here: https://randomnerdtutorials.com/esp8266-dht11dht22-temperature-and-humidity-web-server-with-arduino-ide/
+It use API from [https://openweathermap.org], please add you API Key in config.json
+It also use API from [https://macvensors.co]
+
+The information from booth sources will be cached, to reduce the workload

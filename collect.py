@@ -21,12 +21,23 @@ import json
 ip = str((([ip for ip in socket.gethostbyname_ex(socket.gethostname())[2] if not ip.startswith("127.")] or [[(s.connect(("8.8.8.8", 53)), s.getsockname()[0], s.close()) for s in [socket.socket(socket.AF_INET, socket.SOCK_DGRAM)]][0][1]]) + ["no IP found"])[0])
 ipareaparts = ip.split('.')
 
+parent_dir = os.path.split(os.path.abspath(__file__))[0]
+
 ##########check environment
 try: htmlfile = open('/var/www/html/weather.html','w')
 except:
 	print('file /var/www/html/weather.html not aviable of permission missed')
 	print('please do follow command to get it:')
 	print('sudo touch /var/www/html/weather.html && sudo chmod 777 /var/www/html/weather.html')
+
+try:
+	os.path.isdir(parent_dir + '/cache')
+except:
+	try:
+		path = os.path.join(parent_dir, 'cache')
+		os.mkdir(path)
+	except:
+		print('exit, folder ' + parent_dir + '/cache cloud not created')
 
 ##########Functions
 def calc_abs_humi(relhumi,temp):
@@ -54,20 +65,41 @@ def return_todo(relhumi,abshumi,absoutdoorhumi):
 
 ##########import config.json
 try:
- with open(os.path.split(os.path.abspath(__file__))[0] + '/config.json','r') as file:
+ with open(parent_dir + '/config.json','r') as file:
   cf = json.loads(file.read())
 except:
- sys.exit('exit: The configuration file ' + os.path.split(os.path.abspath(__file__))[0] + '/config.json does not exist or has incorrect content. Please rename the file config.json.example to config.json and change the content as required ')
+ sys.exit('exit: The configuration file ' + parent_dir + '/config.json does not exist or has incorrect content. Please rename the file config.json.example to config.json and change the content as required')
+
+##########check API Key
+try:
+ cf["openweatherlocation"]
+except:
+ sys.exit('exit: no api key in configuration file ' + parent_dir + '/config.json found')
 
 ##########import weather json
-from urllib.request import urlopen
-url = "http://api.openweathermap.org/data/2.5/weather?" + cf["openweatherlocation"] + "&appid=" + cf["openweatherapikey"] + "&lang=de&units=metric"
-response = urlopen(url)
-data_weather = json.loads(response.read())
+ow_remotefile = "http://api.openweathermap.org/data/2.5/weather?" + cf["openweatherlocation"] + "&appid=" + cf["openweatherapikey"] + "&lang=de&units=metric"
+ow_localfile = parent_dir + '/cache/openweathermap.json'
+
+try:
+	owage = os.path.getmtime(ow_localfile)
+except:
+	owage = 0
+
+if owage + 60*30 < time.time():
+	from urllib.request import urlopen
+	urllib.request.urlretrieve(ow_remotefile, ow_localfile)
+
+openweatherjson = open(ow_localfile,)
+data_weather = json.loads(openweatherjson.read())
+openweatherjson.close()
+
 outdoortemp = float(data_weather["main"]["temp"])
 outdoorhumi = float(data_weather["main"]["humidity"])
 outdoorpres = float(data_weather["main"]["pressure"])
 outdoorhuml = calc_abs_humi(outdoorhumi,outdoortemp)
+ow_date = datetime.datetime.fromtimestamp(data_weather["dt"])
+#print(ow_date.strftime("%Y"))
+
 
 htmlstring = '<!DOCTYPE HTML>\n<!--get awesomefonts from here: https://fontawesome.com/v5.15/icons/cloud-sun?style=solid //-->\n<html>\n<head>'
 htmlstring += '<style>\n'
@@ -88,24 +120,28 @@ htmlstring += '</p>\n'
 htmlstring += '<table>'
 htmlstring += '<tr><th></i>Sensor</th><th>Place</th><th><i class="fas fa-temperature-low"></i></th><th>rel. Feuchte</th><th>abs. Feuchte</th>'
 htmlstring += '</tr>'
-htmlstring += '<tr><td><i class="fas fa-globe-europe" style="color:lightgreen"></i> OpenWeather</td><td>Internet</td><td>' + str(round(outdoortemp)) + '&deg;C</td><td>' + str(round(outdoorhumi)) + '%</td><td>' + str(round(outdoorhuml)) + 'g/&#13221;</td></tr><tr><td colspan=5>That is the Internet</td></tr>'
+htmlstring += '<tr><td><i class="fas fa-globe-europe" style="color:lightgreen"></i> OpenWeather</td><td>Internet</td><td>' + str(round(outdoortemp)) + '&deg;C</td><td>' + str(round(outdoorhumi)) + '%</td><td>' + str(round(outdoorhuml)) + 'g/&#13221;</td></tr><tr><td colspan=5>That\'s the Internet at ' + ow_date.strftime("%d. %b. %H:%M") + '</td></tr>'
 
 for ipchangepart in range(0,255):
 	ip = ipareaparts[0] + '.' + ipareaparts[1] + '.' + ipareaparts[2] + '.' + str(ipchangepart)
 	mac = get_mac_address(ip=ip)
 	if mac != "00:00:00:00:00:00":
 		if len(str(mac)) == 17:
+			mv_remotefile = "http://macvendors.co/api/" + mac
+			mv_localfile = parent_dir + '/cache/' + mac + '.json'
 			try:
-				import urllib.request as urllib2
-				import json
-				import codecs
-				request = urllib2.Request("http://macvendors.co/api/" + mac, headers={'User-Agent' : "API Browser"})
-				response = urllib2.urlopen( request )
-				reader = codecs.getreader("utf-8")
-				obj = json.load(reader(response))
-				company = obj['result']['company'];
+				try:
+					os.path.getmtime(mv_localfile)
+				except:
+					urllib.request.urlretrieve(mv_remotefile, mv_localfile)
+
+				macjson = open(mv_localfile,)
+				data_mac = json.loads(macjson.read())
+				macjson.close()
+				company = data_mac['result']['company'];
 			except:
 				print('unknown vendor: ' + mac)
+				os.remove(mv_localfile)
 
 			if company == 'Espressif Inc.':
 				temp = urllib.request.urlopen('http://' + ip + '/temperature').read().decode("UTF-8")
