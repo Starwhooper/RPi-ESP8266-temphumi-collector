@@ -25,8 +25,7 @@ parent_dir = os.path.split(os.path.abspath(__file__))[0]
 
 ##########import config.json
 try:
- with open(parent_dir + '/config.json','r') as file:
-  cf = json.loads(file.read())
+ with open(parent_dir + '/config.json','r') as file: cf = json.loads(file.read())
 except: sys.exit('exit: The configuration file ' + parent_dir + '/config.json does not exist or has incorrect content. Please rename the file config.json.example to config.json and change the content as required')
 
 ##########check environment
@@ -84,18 +83,20 @@ ow_date = datetime.datetime.fromtimestamp(data_weather["dt"])
 
 htmlstring = '<!DOCTYPE HTML><html>\n'
 htmlstring += '<head>\n'
+htmlstring += '<meta charset="utf-8"/>\n'
+htmlstring += '<meta name="viewport" content="width=device-width, initial-scale=1">\n'
+htmlstring += '<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">\n'
 try:
 	htmlstring += '<style>\n'
-	htmlstring += open('style.css','r').read()
+	htmlstring += open(parent_dir + '/style.css','r').read()
 	htmlstring += '</style>\n'
 except: htmlstring += '<!-- NO STYLE.CSS FOUND //-->\n'
 
-htmlstring += '<meta charset="utf-8"/>\n<meta name="viewport" content="width=device-width, initial-scale=1">\n<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">\n</head><body>\n'
-htmlstring += '<h1><i class="fas fa-cloud-sun-rain" style="color:CornflowerBlue"></i> Weather</h1><p class="small">' + return_date() + ' ' + return_time()
-htmlstring += '</p>\n'
+htmlstring += '</head>\n'
+htmlstring += '<body>\n'
+htmlstring += '<h1><i class="fas fa-cloud-sun-rain" style="color:CornflowerBlue"></i> Weather</h1><p class="small">' + return_date() + ' ' + return_time() + '</p>\n'
 htmlstring += '<table>'
-htmlstring += '<tr><th></i>Sensor</th><th>Place</th><th><i class="fas fa-temperature-low"></i></th><th>rel. Feuchte</th><th>abs. Feuchte</th>'
-htmlstring += '</tr>'
+htmlstring += '<tr><th></i>Sensor</th><th>Place</th><th><i class="fas fa-temperature-low"></i></th><th>rel. Feuchte</th><th>abs. Feuchte</th></tr>'
 htmlstring += '<tr><td><i class="fas fa-globe-europe" style="color:lightgreen"></i> OpenWeather</td><td>Internet</td><td>' + str(round(outdoortemp)) + '&deg;C</td><td>' + str(round(outdoorhumi)) + '%</td><td>' + str(round(outdoorhuml)) + 'g/&#13221;</td></tr><tr><td colspan=5>That\'s the Internet at ' + ow_date.strftime("%d. %b. %H:%M") + '</td></tr>'
 
 for ipchangepart in range(0,255):
@@ -117,19 +118,25 @@ for ipchangepart in range(0,255):
 				os.remove(mv_localfile)
 
 			if company == 'Espressif Inc.':
+				#tempurl = 'http://' + ip + '/temperature'
+				#print(tempurl)
 				temp = urllib.request.urlopen('http://' + ip + '/temperature').read().decode("UTF-8")
+				#print(temp)
 				relhumi = urllib.request.urlopen('http://' + ip + '/humidity').read().decode("UTF-8")
-				abshumi = calc_abs_humi(relhumi,temp)
+				#print(relhumi) 
 				htmlstring += '<tr><td><i class="fas fa-thermometer-half" style="color:darkblue"></i> Espressif <small>' + mac[9:] + ' <a href="http://' + ip + '">' + ip + '</a></small></td><td>'
 				try: htmlstring += cf['place'][mac[9:]]
 				except: htmlstring += 'unknown'
-				htmlstring += '</td><td>' + str(round(float(temp))) + '&deg;C</td><td>' + str(round(float(relhumi))) + '%</td><td>'
-				htmlstring += str(round(abshumi))
-				htmlstring += 'g/&#13221;</td></tr>'
-				htmlstring += '<tr><td colspan="5">'
-				htmlstring += return_todo(relhumi,abshumi,outdoorhuml)
-				htmlstring += '</td></tr>'
-
+				try:
+					abshumi = calc_abs_humi(relhumi,temp)
+					htmlstring += '</td><td>' + str(round(float(temp))) + '&deg;C</td><td>' + str(round(float(relhumi))) + '%</td><td>'
+					htmlstring += str(round(abshumi))
+					htmlstring += 'g/&#13221;</td></tr>'
+					htmlstring += '<tr><td colspan="5">'
+					htmlstring += str(return_todo(relhumi,abshumi,outdoorhuml))
+					htmlstring += '</td></tr>'
+				except:
+					htmlstring += '</td><td>down</td><td>down</td><td>down</td></tr><tr><td colspan="5">no clue, sensor is down</td></tr>'
 htmlstring += "</table>\n"
 htmlstring += "</body>\n</html>\n"
 htmlfile.write(htmlstring)
