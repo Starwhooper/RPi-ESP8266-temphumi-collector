@@ -5,7 +5,7 @@ It also use API from https://macvendors.co
 
 The information from booth sources will be cached, to reduce the workload
 
-# RPi-fan-control
+![Display](https://github.com/Starwhooper/RPi-ESP8266-temphumi-collector/blob/master/examples/wetter.png)
 
 ## install ##
 ```bash
