@@ -44,6 +44,26 @@ td, th, tr {
 	font-size : 0.8rem;
 }
 
+td.colsensor {
+	border-right-color : lightgray;
+	border-bottom-color : lightgray;
+}
+
+td.colplace, td.coltemp, td.colrelfeu {
+	border-left-color : lightgray;
+	border-right-color : lightgray;
+	border-bottom-color : lightgray;
+}
+
+td.colabsfeu {
+	border-left-color : lightgray;
+	border-bottom-color : lightgray;
+}
+
+td.colcomment {
+	border-top-color : lightgray;
+}
+
 img {
 	max-width : 100%;
 	height : auto;
