@@ -70,7 +70,6 @@ def is_number(s):
  except ValueError:
    return False
 
-
 ##########import weather json
 ow_remotefile = "http://api.openweathermap.org/data/2.5/weather?" + cf["openweatherlocation"] + "&appid=" + cf["openweatherapikey"] + "&lang=de&units=metric"
 ow_localfile = parent_dir + '/cache/openweathermap.json'
@@ -92,6 +91,11 @@ outdoorpres = float(data_weather["main"]["pressure"])
 outdoorhuml = calc_abs_humi(outdoorhumi,outdoortemp)
 ow_date = datetime.datetime.fromtimestamp(data_weather["dt"])
 
+missedplaces = []
+for place in cf['place']:
+ missedplaces.append(place)
+
+##########generate html output
 htmlstring = '<!DOCTYPE HTML><html>\n'
 htmlstring += '<head>\n'
 htmlstring += '<meta charset="utf-8"/>\n'
@@ -129,12 +133,16 @@ for ipchangepart in range(0,255):
     os.remove(mv_localfile)
 
    if company == 'Espressif Inc.':
-    #tempurl = 'http://' + ip + '/temperature'
-    #print(tempurl)
-    temp = urllib.request.urlopen('http://' + ip + '/temperature').read().decode("UTF-8")
-    #print(temp)
-    relhumi = urllib.request.urlopen('http://' + ip + '/humidity').read().decode("UTF-8")
-    #print(relhumi) 
+    shortmac = str(mac)[9:]
+    missedplaces.remove(shortmac)
+    
+    try:
+     temp = urllib.request.urlopen('http://' + ip + '/temperature').read().decode("UTF-8")
+     relhumi = urllib.request.urlopen('http://' + ip + '/humidity').read().decode("UTF-8")
+    except:
+     temp = 'error'
+     relhume = 'error'
+     print("Device " + ip + " known on DHCP, but provide no information about temperatur or humidity")
     htmlstring += '<tr><td class="colsensor"><i class="fas fa-thermometer-half" style="color:darkblue"></i> Espressif <small>' + mac[9:] + ' <a href="http://' + ip + '">' + ip + '</a></small></td><td class="colplace">'
     try: sensorlabel = cf['place'][mac[9:]]['label']
     except: sensorlabel = 'unknown'
@@ -165,7 +173,25 @@ for ipchangepart in range(0,255):
     htmlstring += '</td></tr>'
 #    except:
 #     htmlstring += '</td><td class="coltemp">down</td><td class="colrelfeu">down</td><td class="colabsfeu">down</td></tr><tr><td colspan="5" class="colcomment">no clue, sensor is down</td></tr>'
+
+for missedplace in missedplaces:
+ htmlstring += '<tr><td class="colsensor"><i class="fas fa-exclamation-triangle" style="color:red"></i> ' + missedplace + '</td><td class="colplace">'
+ try: sensorlabel = cf['place'][missedplace]['label']
+ except: sensorlabel = 'unknown'
+ htmlstring += sensorlabel
+ htmlstring += '</td><td class="coltemp">'
+ htmlstring += '-'
+ htmlstring += '</td><td class="colrelfeu">'
+ htmlstring += '-'
+ htmlstring += '</td><td class="colabsfeu">'
+ htmlstring += '-'
+ htmlstring += '</td></tr>'
+ htmlstring += '<tr><td colspan="5" class="colcomment">'
+ htmlstring += 'ist konfiguriert, aber nicht erreichbar'
+ htmlstring += '</td></tr>'
+
 htmlstring += "</table>\n"
+
 htmlstring += "</body>\n</html>\n"
 htmlfile.write(htmlstring)
 htmlfile.close
