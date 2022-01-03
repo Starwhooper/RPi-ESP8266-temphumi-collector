@@ -14,11 +14,13 @@
    "place":{
       "e5:62:73":{
          "label":"Room 1",
-         "options":"nw;"
+         "options":"nw;",
+		 "sensor":"dht11"
       },
       "7c:dd:8e":{
          "label":"Room 2",
-         "options":""
+         "options":"",
+		 "sensor":"dht22"
       }
    }
 }
