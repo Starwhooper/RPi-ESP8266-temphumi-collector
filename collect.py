@@ -109,7 +109,7 @@ except: htmlstring += '<!-- NO STYLE.CSS FOUND //-->\n'
 
 htmlstring += '</head>\n'
 htmlstring += '<body>\n'
-htmlstring += '<h1><i class="fas fa-cloud-sun-rain" style="color:CornflowerBlue"></i> Weather</h1><p class="small">' + return_date() + ' ' + return_time() + '</p>\n'
+htmlstring += '<h1><i class="fas fa-cloud-sun-rain" style="color:CornflowerBlue"></i> Weather</h1><p>' + return_date() + ' ' + return_time() + '</p>\n'
 htmlstring += '<table>'
 htmlstring += '<tr><th></i>Sensor</th><th>Place</th><th><i class="fas fa-temperature-low"></i></th><th>rel. Feuchte</th><th>abs. Feuchte</th></tr>'
 htmlstring += '<tr><td class="colsensor"><i class="fas fa-globe-europe" style="color:lightgreen"></i> OpenWeather</td><td class="colplace">Internet</td><td class="coltemp">' + str(round(outdoortemp)) + '&deg;C</td><td class="colrelfeu">' + str(round(outdoorhumi)) + '%</td><td class="colabsfeu">' + str(round(outdoorhuml)) + 'g/&#13221;</td></tr><tr><td colspan=5 class="colcomment">That\'s the Internet at ' + ow_date.strftime("%d. %b. %H:%M") + '</td></tr>'
@@ -143,7 +143,7 @@ for ipchangepart in range(0,255):
      temp = 'error'
      relhume = 'error'
      print("Device " + ip + " known on DHCP, but provide no information about temperatur or humidity")
-    htmlstring += '<tr><td class="colsensor"><i class="fas fa-thermometer-half" style="color:darkblue"></i> Espressif <small>' + mac[9:] + ' <a href="http://' + ip + '">' + ip + '</a></small></td><td class="colplace">'
+    htmlstring += '<tr><td class="colsensor"><i class="fas fa-thermometer-half" style="color:darkblue"></i> Espressif <div class="small">' + mac[9:] + ' <a href="http://' + ip + '">' + ip + '</a></div></td><td class="colplace">'
     try: sensorlabel = cf['place'][mac[9:]]['label']
     except: sensorlabel = 'unknown'
     htmlstring += sensorlabel
@@ -151,9 +151,9 @@ for ipchangepart in range(0,255):
     if is_number(temp):
      temp = float(temp)
      htmlstring += str(round(temp,2)) + '&deg;C'
-     if cf['place'][mac[9:]]['sensor'] == 'dht11': htmlstring += '<br /><small>' + str(round(temp - 2,2)) + ' - ' + str(round(temp + 2,2)) + '</small>'
-     if cf['place'][mac[9:]]['sensor'] == 'dht22': htmlstring += '<br /><small>' + str(round(temp - 0.5,2)) + ' - ' + str(round(temp + 0.5,2)) + '</small>'
-     if cf['place'][mac[9:]]['sensor'] == 'sht30': htmlstring += '<br /><small>' + str(round(temp - 0.2,2)) + ' - ' + str(round(temp + 0.2,2)) + '</small>'
+     if cf['place'][mac[9:]]['sensor'] == 'dht11': htmlstring += '<br /><div class="small">' + str(round(temp - 2,2)) + ' - ' + str(round(temp + 2,2)) + '</div>'
+     if cf['place'][mac[9:]]['sensor'] == 'dht22': htmlstring += '<br /><div class="small">' + str(round(temp - 0.5,2)) + ' - ' + str(round(temp + 0.5,2)) + '</div>'
+     if cf['place'][mac[9:]]['sensor'] == 'sht30': htmlstring += '<br /><div class="small">' + str(round(temp - 0.2,2)) + ' - ' + str(round(temp + 0.2,2)) + '</div>'
      if cf['place'][mac[9:]]['sensor'] == 'dht11' and (temp <= 0 or temp >= 60): htmlstring += '<br /><i class="fas fa-exclamation-triangle" style="color:red">außerhalb des Messbereiches'
      if cf['place'][mac[9:]]['sensor'] == 'dht22' and (temp <= -40 or temp >= 80): htmlstring += '<br /><i class="fas fa-exclamation-triangle" style="color:red">außerhalb des Messbereiches'
     else:
@@ -162,9 +162,9 @@ for ipchangepart in range(0,255):
     if is_number(relhumi):
      relhumi = float(relhumi)
      htmlstring += str(round(relhumi)) + '%'
-     if cf['place'][mac[9:]]['sensor'] == 'dht11': htmlstring += '<br /><small>' + str(round(relhumi - 5,2)) + ' - ' + str(round(relhumi + 5,2)) + '</small>'
-     if cf['place'][mac[9:]]['sensor'] == 'dht22': htmlstring += '<br /><small>' + str(round(relhumi - 2,2)) + ' - ' + str(round(relhumi + 2,2)) + '</small>'
-     if cf['place'][mac[9:]]['sensor'] == 'sht30': htmlstring += '<br /><small>' + str(round(relhumi - 2,2)) + ' - ' + str(round(relhumi + 2,2)) + '</small>'
+     if cf['place'][mac[9:]]['sensor'] == 'dht11': htmlstring += '<br /><div class="small">' + str(round(relhumi - 5,2)) + ' - ' + str(round(relhumi + 5,2)) + '</div>'
+     if cf['place'][mac[9:]]['sensor'] == 'dht22': htmlstring += '<br /><div class="small">' + str(round(relhumi - 2,2)) + ' - ' + str(round(relhumi + 2,2)) + '</div>'
+     if cf['place'][mac[9:]]['sensor'] == 'sht30': htmlstring += '<br /><div class="small">' + str(round(relhumi - 2,2)) + ' - ' + str(round(relhumi + 2,2)) + '</div>'
      if cf['place'][mac[9:]]['sensor'] == 'dht11' and (relhumi <= 20 or relhumi >= 90): htmlstring += '<br /><i class="fas fa-exclamation-triangle" style="color:red">außerhalb des Messbereiches'
      if cf['place'][mac[9:]]['sensor'] == 'dht22' and (relhumi <= 0 or relhumi >= 100): htmlstring += '<br /><i class="fas fa-exclamation-triangle" style="color:red">außerhalb des Messbereiches'
     else:
