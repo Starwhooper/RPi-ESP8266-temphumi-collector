@@ -43,7 +43,7 @@ except:
  except: print('exit, folder ' + parent_dir + '/cache cloud not created')
 
 ##########Functions
-def calc_abs_humi(relhumi,temp): return(round(10 ** 5 * 18.016 / 8314.3 * float(relhumi) / 100 * 6.1078 * 10**( ( 7.5 * float(temp) ) / ( 237.3 + float(temp) ) ) / ( float(temp) + 273.15 )))
+def calc_abs_humi(relhumi,temp): return(round(10 ** 5 * 18.016 / 8314.3 * relhumi / 100 * 6.1078 * 10**( ( 7.5 * temp ) / ( 237.3 + temp ) ) / ( temp + 273.15 )))
 def return_date(): return(datetime.date.today().strftime('%d. %b. \'%y'))
 def return_time(): return(time.strftime('%H:%M', time.localtime()))
 
@@ -52,12 +52,12 @@ def return_todo(relhumi,abshumi,absoutdoorhumi,sensoroptions):
  if 'nw;' in sensoroptions:
   todo += cf["htmloutput"]["string_nowindow"]
  else:
-  if float(relhumi) < 40:
+  if relhumi < 40:
    todo += cf["htmloutput"]["string_tolesshumi"]
    if absoutdoorhumi < abshumi: todo += cf["htmloutput"]["string_tolesshumi_close"]
    if absoutdoorhumi > abshumi: todo += cf["htmloutput"]["string_tolesshumi_open"]
-  if float(relhumi) >=40 and float(relhumi) <= 60: todo += cf["htmloutput"]["string_righthumi"]
-  if float(relhumi) > 60:
+  if relhumi >=40 and relhumi <= 60: todo += cf["htmloutput"]["string_righthumi"]
+  if relhumi > 60:
    todo += cf["htmloutput"]["string_tomuchhumi"]
    if absoutdoorhumi < abshumi: todo += cf["htmloutput"]["string_tomuchhumi_open"]
    if absoutdoorhumi > abshumi: todo += cf["htmloutput"]["string_tomuchhumi_close"]
@@ -149,12 +149,24 @@ for ipchangepart in range(0,255):
     htmlstring += sensorlabel
     htmlstring += '</td><td class="coltemp">'
     if is_number(temp):
-     htmlstring += str(round(float(temp),1)) + '&deg;C'
+     temp = float(temp)
+     htmlstring += str(round(temp,2)) + '&deg;C'
+     if cf['place'][mac[9:]]['sensor'] == 'dht11': htmlstring += '<br /><small>' + str(round(temp - 2,2)) + ' - ' + str(round(temp + 2,2)) + '</small>'
+     if cf['place'][mac[9:]]['sensor'] == 'dht22': htmlstring += '<br /><small>' + str(round(temp - 0.5,2)) + ' - ' + str(round(temp + 0.5,2)) + '</small>'
+     if cf['place'][mac[9:]]['sensor'] == 'sht30': htmlstring += '<br /><small>' + str(round(temp - 0.2,2)) + ' - ' + str(round(temp + 0.2,2)) + '</small>'
+     if cf['place'][mac[9:]]['sensor'] == 'dht11' and (temp <= 0 or temp >= 60): htmlstring += '<br /><i class="fas fa-exclamation-triangle" style="color:red">außerhalb des Messbereiches'
+     if cf['place'][mac[9:]]['sensor'] == 'dht22' and (temp <= -40 or temp >= 80): htmlstring += '<br /><i class="fas fa-exclamation-triangle" style="color:red">außerhalb des Messbereiches'
     else:
      htmlstring += 'Fehlmessung'
     htmlstring += '</td><td class="colrelfeu">'
     if is_number(relhumi):
-     htmlstring += str(round(float(relhumi))) + '%'
+     relhumi = float(relhumi)
+     htmlstring += str(round(relhumi)) + '%'
+     if cf['place'][mac[9:]]['sensor'] == 'dht11': htmlstring += '<br /><small>' + str(round(relhumi - 5,2)) + ' - ' + str(round(relhumi + 5,2)) + '</small>'
+     if cf['place'][mac[9:]]['sensor'] == 'dht22': htmlstring += '<br /><small>' + str(round(relhumi - 2,2)) + ' - ' + str(round(relhumi + 2,2)) + '</small>'
+     if cf['place'][mac[9:]]['sensor'] == 'sht30': htmlstring += '<br /><small>' + str(round(relhumi - 2,2)) + ' - ' + str(round(relhumi + 2,2)) + '</small>'
+     if cf['place'][mac[9:]]['sensor'] == 'dht11' and (relhumi <= 20 or relhumi >= 90): htmlstring += '<br /><i class="fas fa-exclamation-triangle" style="color:red">außerhalb des Messbereiches'
+     if cf['place'][mac[9:]]['sensor'] == 'dht22' and (relhumi <= 0 or relhumi >= 100): htmlstring += '<br /><i class="fas fa-exclamation-triangle" style="color:red">außerhalb des Messbereiches'
     else:
      htmlstring += 'Fehlmessung'
     htmlstring += '</td><td class="colabsfeu">'
