@@ -149,7 +149,7 @@ for ipchangepart in range(0,255):
     htmlstring += sensorlabel
     htmlstring += '</td><td class="coltemp">'
     if is_number(temp):
-     htmlstring += str(round(float(temp))) + '&deg;C'
+     htmlstring += str(round(float(temp),1)) + '&deg;C'
     else:
      htmlstring += 'Fehlmessung'
     htmlstring += '</td><td class="colrelfeu">'
