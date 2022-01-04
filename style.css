@@ -1,10 +1,10 @@
 h1 {
-	font-size : 5vh;
+	font-size : 5vw;
 	background : lightgreen;
 }
 
 h2 {
-	font-size : 4vh;
+	font-size : 4vw;
 }
 
 a:link, a:visited, a:hover, a:active {
@@ -24,7 +24,7 @@ html {
 }
 
 p, div.small {
-	font-size : 1.5vh;
+	font-size : 1.5vw;
 }
 
 table {
@@ -40,7 +40,7 @@ table {
 td, th, tr {
 	border : black solid 2px;
 	border-collapse : collapse;
-	font-size : 3vh;
+	font-size : 2vw;
 }
 
 td.colsensor {
