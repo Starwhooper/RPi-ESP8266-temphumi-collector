@@ -1,0 +1,80 @@
+h1 {
+	font-size : 5vw;
+	background : lightgreen;
+}
+
+h2 {
+	font-size : 4vw;
+}
+
+a:link, a:visited, a:hover, a:active {
+	background-color : lightgray;
+	color : white;
+	text-align : center;
+	text-decoration : none;
+	display : inline-block;
+	width : 100%;
+}
+
+html {
+	font-family : Arial;
+	display : inline-block;
+	margin : 0 auto;
+	text-align : center;
+}
+
+p, div.small {
+	font-size : 1.5vw;
+}
+
+table {
+	margin-left : auto;
+	margin-right : auto;
+	border : black solid 2px;
+	border-collapse : collapse;
+	width:80%;
+	table-layout: fixed;
+	overflow-wrap: break-word;
+}
+
+td, th, tr {
+	border : black solid 2px;
+	border-collapse : collapse;
+	font-size : 2vw;
+}
+
+td.colsensor {
+	border-right-color : lightgray;
+	border-bottom-color : lightgray;
+}
+
+td.coldevice, td.coltemp, td.colrelfeu {
+	border-left-color : lightgray;
+	border-right-color : lightgray;
+	border-bottom-color : lightgray;
+}
+
+td.colabsfeu {
+	border-left-color : lightgray;
+	border-bottom-color : lightgray;
+}
+
+td.colcomment {
+	border-top-color : lightgray;
+}
+
+td.errorleft {
+	border-right-color : lightgray;
+}
+td.errormiddle {
+	border-right-color : lightgray;
+	border-left-color : lightgray;
+}
+td.errorright {
+	border-left-color : lightgray;
+}
+
+img {
+	max-width : 100%;
+	height : auto;
+}
