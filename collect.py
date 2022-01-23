@@ -192,6 +192,13 @@ for ipchangepart in range(0,255):
 
    if company == 'Espressif Inc.':
     shortmac = str(mac)[9:]
+    try: sensoroptions = cf['device'][shortmac]['options']
+    except: sensoroptions = ''
+    if 'i;' in sensoroptions:
+     if shortmac in misseddevices:
+      misseddevices.remove(shortmac)
+     continue
+
     htmlstringonedevice = ''
 
     try:
@@ -208,8 +215,8 @@ for ipchangepart in range(0,255):
      temp = float(temp)
      relhumi = float(relhumi)
      abshumi = calc_abs_humi(relhumi,temp)
-     try: sensoroptions = cf['device'][shortmac]['options']
-     except: sensoroptions = ''
+#     try: sensoroptions = cf['device'][shortmac]['options']
+#     except: sensoroptions = ''
      
      htmlstringonedevice += '<tr><td class="colsensor"><i class="fas fa-thermometer-half" style="color:darkblue"></i> Espressif <div class="small">' + shortmac + ' <a href="http://' + ip + '">' + ip + '</a></div></td><td class="coldevice">'
      htmlstringonedevice += sensorlabel

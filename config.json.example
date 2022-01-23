@@ -27,6 +27,16 @@
          "label":"Wohnzimmer",
          "options":"",
          "sensor":"dht11"
+      },
+      "ab:ff:22":{
+         "label":"Wohnzimmer",
+         "options":"i;",
+         "sensor":"dht11"
+      },
+      "45:72:a3":{
+         "label":"Wohnzimmer",
+         "options":"nw;",
+         "sensor":"dht22"
       }
    }
 }
