@@ -65,13 +65,13 @@ def return_todo(relhumi,abshumi,absoutdoorhumi,sensoroptions,device):
    if absoutdoorhumi < abshumi: todo += cf["htmloutput"]["string_tolesshumi_close"]
    if absoutdoorhumi > abshumi: 
     todo += cf["htmloutput"]["string_tolesshumi_open"]
-    sendmsg = true
+    sendmsg = True
   if relhumi >=40 and relhumi <= 60: todo += cf["htmloutput"]["string_righthumi"]
   if relhumi > 60:
    todo += cf["htmloutput"]["string_tomuchhumi"]
    if absoutdoorhumi < abshumi: 
     todo += cf["htmloutput"]["string_tomuchhumi_open"]
-    sendmsg = true
+    sendmsg = True
    if absoutdoorhumi > abshumi: todo += cf["htmloutput"]["string_tomuchhumi_close"]
   if sendmsg == True: 
    pushovermessage(device + ": " + remove_tags(todo))
@@ -188,7 +188,8 @@ for ipchangepart in range(0,255):
     company = data_mac['result']['company'];
    except:
     print('unknown vendor: ' + mac)
-    os.remove(mv_localfile)
+    try: os.remove(mv_localfile)
+    except: print('no cached file to delete: ' + mv_localfile)
 
    if company == 'Espressif Inc.':
     shortmac = str(mac)[9:]
