@@ -169,8 +169,8 @@ htmlstring += '</head>\n'
 htmlstring += '<body>\n'
 htmlstring += '<h1><i class="fas fa-cloud-sun-rain" style="color:CornflowerBlue"></i> Weather</h1><p>' + return_date() + ' ' + return_time() + '</p>\n'
 htmlstring += '<table>'
-htmlstring += '<tr><th></i>Sensor</th><th>Ger&auml;t</th><th><i class="fas fa-temperature-low"></i></th><th>rel. Feuchte</th><th>abs. Feuchte</th></tr>'
-htmlstring += '<tr><td class="colsensor"><i class="fas fa-globe-europe" style="color:lightgreen"></i> OpenWeather</td><td class="coldevice">Internet</td><td class="coltemp">' + str(round(outdoortemp)) + '&deg;C</td><td class="colrelfeu">' + str(round(outdoorhumi)) + '%</td><td class="colabsfeu">' + str(round(outdoorhuml)) + 'g/&#13221;</td></tr><tr><td colspan=5 class="colcomment">That\'s the Internet at ' + ow_date.strftime("%d. %b. %H:%M") + '</td></tr>'
+htmlstring += '<tr><th></i>Sensor</th><th>Ger&auml;t</th><th><i class="fas fa-temperature-low"></i></th><th>rel. Feuchte</th><th>abs. Feuchte</th><th>Aufgabe</th></tr>'
+htmlstring += '<tr><td class="colsensor"><i class="fas fa-globe-europe" style="color:lightgreen"></i> OpenWeather</td><td class="coldevice">Internet</td><td class="coltemp">' + str(round(outdoortemp)) + '&deg;C</td><td class="colrelfeu">' + str(round(outdoorhumi)) + '%</td><td class="colabsfeu">' + str(round(outdoorhuml)) + 'g/&#13221;</td><td class="colcomment"><div class="small">That\'s the Internet at ' + ow_date.strftime("%d. %b. %H:%M") + '</div></td></tr>'
 
 for ipchangepart in range(0,255):
  ip = ipareaparts[0] + '.' + ipareaparts[1] + '.' + ipareaparts[2] + '.' + str(ipchangepart)
@@ -229,8 +229,8 @@ for ipchangepart in range(0,255):
      htmlstringonedevice += relhumidetails(shortmac,relhumi)
      htmlstringonedevice += '</td><td class="colabsfeu">'
      htmlstringonedevice += str(round(abshumi)) + 'g/&#13221;'
-     htmlstringonedevice += '</td></tr>'
-     htmlstringonedevice += '<tr><td colspan="5" class="colcomment">'
+     htmlstringonedevice += '</td>'
+     htmlstringonedevice += '<td class="colcomment">'
      htmlstringonedevice += str(return_todo(relhumi,abshumi,outdoorhuml,sensoroptions,sensorlabel))
      htmlstringonedevice += '</td></tr>'
      if shortmac in misseddevices:
@@ -242,7 +242,7 @@ for misseddevice in misseddevices:
  try: sensorlabel = cf['device'][misseddevice]['label']
  except: sensorlabel = 'unknown'
  htmlstring += sensorlabel
- htmlstring += '</td><td  class="errorright" colspan=3 >ist konfiguriert, aber nicht erreichbar</td></tr>'
+ htmlstring += '</td><td  class="errorright" colspan=4 >' + cf['htmloutput']['string_configured_but_not_found'] + '</td></tr>'
 
 htmlstring += "</table>\n"
 
