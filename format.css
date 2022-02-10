@@ -24,7 +24,7 @@ html {
 }
 
 p, div.small {
-	font-size : 1.5vw;
+	font-size : 1.0vw;
 }
 
 table {
@@ -32,7 +32,7 @@ table {
 	margin-right : auto;
 	border : black solid 2px;
 	border-collapse : collapse;
-	width:80%;
+	width:90%;
 	table-layout: fixed;
 	overflow-wrap: break-word;
 }
@@ -48,19 +48,16 @@ td.colsensor {
 	border-bottom-color : lightgray;
 }
 
-td.coldevice, td.coltemp, td.colrelfeu {
+td.coldevice, td.coltemp, td.colrelfeu, td.colabsfeu {
 	border-left-color : lightgray;
 	border-right-color : lightgray;
 	border-bottom-color : lightgray;
 }
 
-td.colabsfeu {
+td.colcomment {
 	border-left-color : lightgray;
 	border-bottom-color : lightgray;
-}
-
-td.colcomment {
-	border-top-color : lightgray;
+	font-size : 1.0vw;
 }
 
 td.errorleft {
