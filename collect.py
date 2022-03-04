@@ -74,7 +74,7 @@ def return_todo(relhumi,abshumi,absoutdoorhumi,sensoroptions,device):
     sendmsg = True
    if absoutdoorhumi > abshumi: todo += cf["htmloutput"]["string_tomuchhumi_close"]
   if sendmsg == True: 
-   pushovermessage(device + ": " + remove_tags(todo))
+   pushovermessage(device + ": r=" + str(relhumi) + "% " + remove_tags(todo))
 #   print(todo)
  return(todo)
 
@@ -207,7 +207,7 @@ for ipchangepart in range(0,255):
      relhumi = urllib.request.urlopen('http://' + ip + '/humidity').read().decode("UTF-8")
     except:
      temp = 'error'
-     relhume = 'error'
+     relhumi = 'error'
      print("Device " + ip + " known on DHCP, but provide no information about temperatur or humidity")
 
     if is_number(relhumi) and is_number(temp):
@@ -219,7 +219,7 @@ for ipchangepart in range(0,255):
 #     try: sensoroptions = cf['device'][shortmac]['options']
 #     except: sensoroptions = ''
      
-     htmlstringonedevice += '<tr><td class="colsensor"><i class="fas fa-thermometer-half" style="color:darkblue"></i> Espressif <div class="small">' + shortmac + ' <a href="http://' + ip + '">' + ip + '</a></div></td><td class="coldevice">'
+     htmlstringonedevice += '<tr><td class="colsensor"><i class="fas fa-thermometer-half" style="color:darkblue"></i> Espressif <div class="small">' + mac + ' <a href="http://' + ip + '">' + ip + '</a></div></td><td class="coldevice">'
      htmlstringonedevice += sensorlabel
      htmlstringonedevice += '</td><td class="coltemp">'
      htmlstringonedevice += str(round(temp,2)) + '&deg;C'
