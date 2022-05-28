@@ -20,6 +20,8 @@ except:
 
 import datetime
 import os
+import re
+import requests
 import socket
 import sys
 import time
@@ -57,26 +59,33 @@ def return_time(): return(time.strftime('%H:%M', time.localtime()))
 def return_todo(relhumi,abshumi,absoutdoorhumi,sensoroptions,device):
  sendmsg = False
  todo = ''
+ shorttodo = ''
  if 'nw;' in sensoroptions:
   todo += cf["htmloutput"]["string_nowindow"]
  else:
-  if relhumi < 40:
+  if relhumi < cf["limits"]["relhumi"]["min"]:
    todo += cf["htmloutput"]["string_tolesshumi"]
-   if absoutdoorhumi < abshumi: todo += cf["htmloutput"]["string_tolesshumi_close"]
+   if absoutdoorhumi < abshumi: 
+    todo += cf["htmloutput"]["string_tolesshumi_close"]
+    shorttodo = cf["htmloutput"]["string_close"]
    if absoutdoorhumi > abshumi: 
     todo += cf["htmloutput"]["string_tolesshumi_open"]
+    shorttodo = cf["htmloutput"]["string_open"]
     sendmsg = True
-  if relhumi >=40 and relhumi <= 60: todo += cf["htmloutput"]["string_righthumi"]
-  if relhumi > 60:
+  if relhumi >= cf["limits"]["relhumi"]["min"] and relhumi <= cf["limits"]["relhumi"]["max"]: todo += cf["htmloutput"]["string_righthumi"]
+  if relhumi > cf["limits"]["relhumi"]["max"]:
    todo += cf["htmloutput"]["string_tomuchhumi"]
    if absoutdoorhumi < abshumi: 
     todo += cf["htmloutput"]["string_tomuchhumi_open"]
+    shorttodo = cf["htmloutput"]["string_open"]
     sendmsg = True
-   if absoutdoorhumi > abshumi: todo += cf["htmloutput"]["string_tomuchhumi_close"]
+   if absoutdoorhumi > abshumi: 
+    todo += cf["htmloutput"]["string_tomuchhumi_close"]
+    shorttodo = cf["htmloutput"]["string_close"]
   if sendmsg == True: 
-   pushovermessage(device + ": r=" + str(relhumi) + "% " + remove_tags(todo))
+   pushovermessage("<b>" + device + " " + shorttodo[0:1].lower() + shorttodo[1:] + "</b>: r=" + str(relhumi) + "% " + remove_tags(todo))
 #   print(todo)
- return(todo)
+ return(shorttodo,todo)
 
 def is_number(s):
  try:
@@ -115,18 +124,20 @@ def relhumidetails(shortmac,relhumi):
 
 if cf["pushover"]["notification"] == "on":
  import http.client, urllib
+ 
  def pushovermessage(message):
-  conn = http.client.HTTPSConnection("api.pushover.net:443")
-  conn.request("POST", "/1/messages.json",
-    urllib.parse.urlencode({
-      "token": cf["pushover"]["apikey"],
-      "user": cf["pushover"]["userkey"],
-      "message": message,
-    }), { "Content-type": "application/x-www-form-urlencoded" })
-  conn.getresponse()
- import re
- TAG_RE = re.compile(r'<[^>]+>')
+#  import requests
+  r = requests.post("https://api.pushover.net/1/messages.json", data = {
+   "token": cf["pushover"]["apikey"],
+   "user": cf["pushover"]["userkey"],
+   "html": 1,
+   "priority": -2,
+   "message": message
+   })
+ 
  def remove_tags(text):
+#  import re
+  TAG_RE = re.compile(r'<[^>]+>')
   return TAG_RE.sub('', text)
 
 ##########import weather json
@@ -231,7 +242,11 @@ for ipchangepart in range(0,255):
      htmlstringonedevice += str(round(abshumi)) + 'g/&#13221;'
      htmlstringonedevice += '</td>'
      htmlstringonedevice += '<td class="colcomment">'
-     htmlstringonedevice += str(return_todo(relhumi,abshumi,outdoorhuml,sensoroptions,sensorlabel))
+     shorttodo, todo = return_todo(relhumi,abshumi,outdoorhuml,sensoroptions,sensorlabel)
+     #htmlstringonedevice += str(return_todo(relhumi,abshumi,outdoorhuml,sensoroptions,sensorlabel))
+     if len(shorttodo) >= 1: htmlstringonedevice += '<strong>' + shorttodo + ':</strong> '
+     htmlstringonedevice += todo
+#     htmlstringonedevice += '</td></tr>'
      htmlstringonedevice += '</td></tr>'
      if shortmac in misseddevices:
       misseddevices.remove(shortmac)
