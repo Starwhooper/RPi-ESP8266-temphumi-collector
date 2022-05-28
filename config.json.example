@@ -1,43 +1,50 @@
 {
-   "htmloutput":{
-      "file":"/var/www/html/weather.html",
-      "string_tolesshumi":"An diesem Ort ist die Luftfeuchtigkeit zu niedrig.",
-      "string_tolesshumi_open":" Da die abs. Feuchte drau&szlig;en h&ouml;her ist, sollte zum ausgleich gel&uuml;ftet werden. <i class=\"fas fa-door-open\"></i>",
-      "string_tolesshumi_close":" Da die abs. Feuchte drau&szlig;en niedriger ist, sollte nicht gel&uuml;ftet werden um die Luftfeuchtigkeit m&ouml;glichst zu erhalten. <i class=\"fas fa-door-closed\"></i>",
-      "string_tomuchhumi":"An diesem Ort ist die Luftfeuchtigkeit zu hoch.",
-      "string_tomuchhumi_open":" Da die abs. Feuchte drau&szlig;en niedriger ist, sollte zum ausgleich gel&uuml;ftet werden. <i class=\"fas fa-door-open\"></i>",
-      "string_tomuchhumi_close":" Da die abs. Feuchte drau&szlig;en h&ouml;her ist, sollte nicht gel&uuml;ftet werden um die Luftfeuchtigkeit m&ouml;glichst zu erhalten. <i class=\"fas fa-door-closed\"></i>",
-      "string_righthumi":"<i class=\"far fa-thumbs-up\" style=\"color:green;font-size:2vw;\"></i>",
-      "string_nowindow":"Keine M&ouml;glichkeit zum L&uuml;ften. <i class=\"far fa-surprise\"></i>",
-      "string_outside_measuring_range":"<br /><i class=\"fas fa-exclamation-triangle\" style=\"color:red\"></i>au&szlig;erhalb des Messbereiches",
-      "string_configured_but_not_found":"ist konfiguriert, aber nicht erreichbar"
-   },
-   "openweather":{
-      "location":"zip=22399,de",
-      "apikey":"",
-      "maxageinminutes":30
-   },
-   "pushover":{
-      "notification":"on",
-      "apikey":"",
-      "userkey":"",
-      "maxageinminutes":30
-   },
-   "device":{
-      "e5:62:73":{
-         "label":"Wohnzimmer",
-         "options":"",
-         "sensor":"dht11"
-      },
-      "ab:ff:22":{
-         "label":"Wohnzimmer",
-         "options":"i;",
-         "sensor":"dht11"
-      },
-      "45:72:a3":{
-         "label":"Wohnzimmer",
-         "options":"nw;",
-         "sensor":"dht22"
-      }
-   }
+  "device": {
+    "e5:62:73": {
+      "label": "Wohnzimmer",
+      "options": "",
+      "sensor": "dht11"
+    },
+    "ab:ff:22": {
+      "label": "Wohnzimmer",
+      "options": "i;",
+      "sensor": "dht11"
+    },
+    "45:72:a3": {
+      "label": "Wohnzimmer",
+      "options": "nw;",
+      "sensor": "dht22"
+    }
+  },
+  "htmloutput": {
+    "file": "/var/www/html/weather.html",
+    "string_open": "Lüften",
+    "string_close": "Nicht lüften",
+    "string_tolesshumi": "An diesem Ort ist die Luftfeuchtigkeit zu niedrig",
+    "string_tolesshumi_open": ", da die abs. Feuchte drau&szlig;en h&ouml;her ist, sollte zum ausgleich gel&uuml;ftet werden. <i class=\"fas fa-door-open\"></i>",
+    "string_tolesshumi_close": ", da die abs. Feuchte drau&szlig;en niedriger ist, sollte nicht gel&uuml;ftet werden um die Luftfeuchtigkeit m&ouml;glichst zu erhalten. <i class=\"fas fa-door-closed\"></i>",
+    "string_tomuchhumi": "An diesem Ort ist die Luftfeuchtigkeit zu hoch",
+    "string_tomuchhumi_open": ", da die abs. Feuchte drau&szlig;en niedriger ist, sollte zum ausgleich gel&uuml;ftet werden. <i class=\"fas fa-door-open\"></i>",
+    "string_tomuchhumi_close": ", da die abs. Feuchte drau&szlig;en h&ouml;her ist, sollte nicht gel&uuml;ftet werden um die Luftfeuchtigkeit m&ouml;glichst zu erhalten. <i class=\"fas fa-door-closed\"></i>",
+    "string_righthumi": "An diesem Ort ist die Luftfeuchtigkeit passend. <i class=\"far fa-thumbs-up\"></i>",
+    "string_nowindow": "Keine M&ouml;glichkeit zum L&uuml;ften. <i class=\"far fa-surprise\"></i>",
+    "string_outside_measuring_range": "<br /><i class=\"fas fa-exclamation-triangle\" style=\"color:red\"></i>au&szlig;erhalb des Messbereiches"
+  },
+  "limits": {
+    "relhumi": {
+      "min": 40,
+      "max": 60
+    }
+  },
+  "openweather": {
+    "location": "zip=22399,de",
+    "apikey": "",
+    "maxageinminutes": 30
+  },
+  "pushover": {
+    "notification": "on",
+    "apikey": "",
+    "userkey": "",
+    "maxageinminutes": 30
+  }
 }
