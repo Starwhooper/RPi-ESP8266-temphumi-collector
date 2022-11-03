@@ -28,7 +28,8 @@
     "string_tomuchhumi_close": ", da die abs. Feuchte drau&szlig;en h&ouml;her ist, sollte nicht gel&uuml;ftet werden um die Luftfeuchtigkeit m&ouml;glichst zu erhalten. <i class=\"fas fa-door-closed\"></i>",
     "string_righthumi": "An diesem Ort ist die Luftfeuchtigkeit passend. <i class=\"far fa-thumbs-up\"></i>",
     "string_nowindow": "Keine M&ouml;glichkeit zum L&uuml;ften. <i class=\"far fa-surprise\"></i>",
-    "string_outside_measuring_range": "<br /><i class=\"fas fa-exclamation-triangle\" style=\"color:red\"></i>au&szlig;erhalb des Messbereiches"
+    "string_outside_measuring_range": "<br /><i class=\"fas fa-exclamation-triangle\" style=\"color:red\"></i>au&szlig;erhalb des Messbereiches",
+    "string_configured_but_not_found": "ist konfiguriert, aber nicht erreichbar"
   },
   "limits": {
     "relhumi": {
